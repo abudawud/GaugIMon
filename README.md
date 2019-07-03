@@ -1,3 +1,7 @@
+## Gauge IoT Dashboard
+![Dashboard](https://raw.githubusercontent.com/abudawud/GaugIMon/master/doc/dashboard.png)
+![Sensor](https://raw.githubusercontent.com/abudawud/GaugIMon/master/doc/sensor.png)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

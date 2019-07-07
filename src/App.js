@@ -11,13 +11,13 @@ function App(): React.Node {
                 <Route
                     exact 
                     path="/" 
-                    render={(props) => <Wrapper {...props} title="Dashboard"><Homepage /> </Wrapper>} 
+                    render={(props) => <Wrapper {...props} title="Dashboard"><Homepage/></Wrapper>} 
                 />
 
                 <Route
                     exact 
                     path="/Sensors" 
-                    render={(props) => <Wrapper {...props} title="Sensor Detail"><Sensors /> </Wrapper>} 
+                    render={(props) => <Wrapper {...props} title="Sensor Detail"><Sensors/></Wrapper>} 
                 />
             </Switch>
         </Router>

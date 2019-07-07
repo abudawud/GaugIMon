@@ -52,6 +52,7 @@ class ReactRadialGauge extends React.Component {
       colorPlate:"#fff",
       borderShadowWidth: 0,
       valueBox: true,
+      valueInt: 2,
       needleType: "arrow",
       needleWidth: 2,
       needleCircleSize: 7,

@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -16,10 +16,11 @@ import HomeIcon from '@material-ui/icons/Home';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { Link as RouterLink } from 'react-router-dom';
+import MQTT from 'mqtt';
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles(theme => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
   },
@@ -55,9 +56,9 @@ const useStyles = makeStyles(theme => ({
   menuButtonHidden: {
     display: 'none',
   },
-  link:{
+  link: {
     height: 24,
-    marginRight:10
+    marginRight: 10
   },
   title: {
     flexGrow: 1,
@@ -101,71 +102,96 @@ const useStyles = makeStyles(theme => ({
   fixedHeight: {
     height: 240,
   },
-}));
+});
 
-export default function Wrapper(props) {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+class Wrapper extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { open: true, sensors: {"s1":0, "s2": 0, "s3":0, "s4":0, "s5":0, "s6":0} }
+    this.handleDrawer = this.handleDrawer.bind(this)
+  }
 
-  return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="Open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            <Link className={classes.link} color="inherit" component={RouterLink} to="/">
-              <IconButton color="inherit">
-                <HomeIcon />
-              </IconButton>
-            </Link>
-            {props.title}
-          </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-        }}
-        open={open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider />
+  handleDrawer() {
+    this.setState({ open: !this.state.open })
+  }
 
-        <Divider />
+  handleDataMQTT = (topic, msg) => {
+    const str = msg.toString();
+    const sensors = JSON.parse( str );
+    this.setState({sensors: sensors})
+  }
 
-      </Drawer>
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          {props.children}
-        </Container>
-      </main>
-    </div>
-  );
+  componentDidMount() {
+    console.log("mount");
+    var mqtt = MQTT.connect('ws://dev.sabinsolusi.com:8083')
+
+    mqtt.on('connect', function () {
+      console.log("CONNEC")
+      mqtt.subscribe('sensors')
+    })
+
+    mqtt.on('message', this.handleDataMQTT)
+
+    this.setState({ open: false });
+  }
+
+  render() {
+    const open = this.state.open
+    return (
+      <div className={this.props.classes.root}>
+        <CssBaseline />
+        <AppBar position="absolute" className={clsx(this.props.classes.appBar, open && this.props.classes.appBarShift)}>
+          <Toolbar className={this.props.classes.toolbar}>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="Open drawer"
+              onClick={this.handleDrawer}
+              className={clsx(this.props.classes.menuButton, open && this.props.classes.menuButtonHidden)}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography component="h1" variant="h6" color="inherit" noWrap className={this.props.classes.title}>
+              <Link className={this.props.classes.link} color="inherit" component={RouterLink} to="/">
+                <IconButton color="inherit">
+                  <HomeIcon />
+                </IconButton>
+              </Link>
+              {this.props.title}
+            </Typography>
+            <IconButton color="inherit">
+              <Badge badgeContent={4} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant="permanent"
+          classes={{
+            paper: clsx(this.props.classes.drawerPaper, !open && this.props.classes.drawerPaperClose),
+          }}
+          open={open}
+        >
+          <div className={this.props.classes.toolbarIcon}>
+            <IconButton onClick={this.handleDrawer}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </div>
+          <Divider />
+
+          <Divider />
+
+        </Drawer>
+        <main className={this.props.classes.content}>
+          <div className={this.props.classes.appBarSpacer} />
+          <Container maxWidth="lg" className={this.props.classes.container}>
+            {React.cloneElement(this.props.children, { sensors: this.state.sensors })}
+          </Container>
+        </main>
+      </div>
+    );
+  }
 }
+
+export default withStyles(theme => styles(theme)) (Wrapper)

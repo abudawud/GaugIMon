@@ -1,5 +1,4 @@
 import * as React from "react";
-import Wrapper from '../Wrapper';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';

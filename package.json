@@ -8,6 +8,7 @@
     "canvas-gauges": "^2.1.5",
     "chart.js": "^2.8.0",
     "clsx": "^1.0.4",
+    "mqtt": "^3.0.0",
     "react": "^16.8.6",
     "react-canvas-gauges": "^1.2.1",
     "react-chartjs-2": "^2.7.6",

@@ -8,6 +8,7 @@
     "canvas-gauges": "^2.1.5",
     "chart.js": "^2.8.0",
     "clsx": "^1.0.4",
+    "gh-pages": "^2.0.1",
     "mqtt": "^3.0.0",
     "react": "^16.8.6",
     "react-canvas-gauges": "^1.2.1",
@@ -17,10 +18,13 @@
     "react-scripts": "3.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "react-scripts start",
+    "start": "serve -s build",
     "build": "react-scripts build",
+    "deploy":"gh-pages -d build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"

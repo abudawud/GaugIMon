@@ -1,0 +1,1 @@
+{"version":3,"sources":["Sensors.css"],"names":[],"mappings":"AAAA,eACI,eACJ,CAEA,YACI,WACJ,CAEA,MACI,eACJ","file":"main.feeac489.chunk.css","sourcesContent":[".table-info td {\n    text-align: left;\n}\n\n.table-info{\n    height: 100%\n}\n\n.bold {\n    font-weight: bold;\n}"]}

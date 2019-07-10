@@ -107,7 +107,7 @@ const styles = (theme) => ({
 class Wrapper extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { open: true, sensors: {"s1":0, "s2": 0, "s3":0, "s4":0, "s5":0, "s6":0} }
+    this.state = { open: true, sensors: {0:0.0, 1: 0.0, 2:0.0, 3:0.0, 4:0.0, 5:0.0} }
     this.handleDrawer = this.handleDrawer.bind(this)
   }
 
@@ -118,16 +118,24 @@ class Wrapper extends React.Component {
   handleDataMQTT = (topic, msg) => {
     const str = msg.toString();
     const sensors = JSON.parse( str );
-    this.setState({sensors: sensors})
+    if(sensors['ai1'] != undefined){
+      const sID = sensors.s;
+      const val = sensors.ai1;
+      var data = this.state.sensors;
+      data[sID] = (val / 4095.0) * 10.0;
+      console.log(data);
+      this.setState({sensors: data });
+    }
+    // this.setState({sensors: sensors})
   }
 
   componentDidMount() {
     console.log("mount");
-    var mqtt = MQTT.connect('ws://dev.sabinsolusi.com:8083')
+    var mqtt = MQTT.connect('ws://dev.sabinsolusi.com:10283') 
 
     mqtt.on('connect', function () {
       console.log("CONNEC")
-      mqtt.subscribe('sensors')
+      mqtt.subscribe('Advantech/#')
     })
 
     mqtt.on('message', this.handleDataMQTT)

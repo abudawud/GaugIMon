@@ -7,52 +7,52 @@ class ReactRadialGauge extends React.Component {
     const options = Object.assign({}, this.props, {
       renderTo: this.el,
       width: 270,
-      title: "Volt",
+      title: "Pressure",
       height: 270,
-      units:"V",
+      units:"psi",
       minValue: 0,
-      maxValue: 10,
+      maxValue: 100,
       majorTicks: [
           "0",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "8",
-          "9",
-          "10"
+          "10",
+          "20",
+          "30",
+          "40",
+          "50",
+          "60",
+          "70",
+          "80",
+          "90",
+          "100"
       ],
       minorTicks: 2,
       strokeTicks: true,
       highlights:[
           {
               "from": 0,
-              "to": 2,
+              "to": 20,
               "color": "rgba(10, 10, 10, .25)"
           },
           {
-              "from": 2,
-              "to": 3,
+              "from": 20,
+              "to": 30,
               "color": "rgba(0, 255, 10, .50)"
           },
           {
-              "from": 3,
-              "to": 6,
+              "from": 30,
+              "to": 60,
               "color": "rgba(255, 255, 10, .50)"
           },
           {
-              "from": 6,
-              "to": 10,
+              "from": 60,
+              "to": 100,
               "color": "rgba(255, 50, 50, .50)"
           }
       ],
       colorPlate:"#fff",
       borderShadowWidth: 0,
       valueBox: true,
-      valueInt: 2,
+      valueInt: 3,
       needleType: "arrow",
       needleWidth: 2,
       needleCircleSize: 7,

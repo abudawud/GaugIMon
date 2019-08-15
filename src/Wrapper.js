@@ -117,9 +117,17 @@ class Wrapper extends React.Component {
 
   handleDataMQTT = (topic, msg) => {
     const str = msg.toString();
-    const sensors = JSON.parse( str );
+    const data = JSON.parse( str );
+    const sensors = {
+                      "s1": !data.ai1 ? 0 : data.ai1, 
+                      "s2": !data.ai2 ? 0 : data.ai2, 
+                      "s3": !data.ai3 ? 0 : data.ai3, 
+                      "s4": !data.ai4 ? 0 : data.ai4,
+                      "s5": !data.ai5 ? 0 : data.ai5,
+                      "s6": !data.ai5 ? 0 : data.ai5
+                    }
     this.setState({sensors: sensors});
-    // console.log(sensors);
+    console.log(sensors);
   }
 
   componentDidMount() {
@@ -128,7 +136,7 @@ class Wrapper extends React.Component {
 
     mqtt.on('connect', function () {
       console.log("CONNEC")
-      mqtt.subscribe('sensors')
+      mqtt.subscribe('Advantech/#')
     })
 
     mqtt.on('message', this.handleDataMQTT)

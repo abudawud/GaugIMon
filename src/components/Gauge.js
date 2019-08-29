@@ -59,7 +59,7 @@ class ReactRadialGauge extends React.Component {
       colorValueBoxRect: "#fff",
       needleCircleOuter: true,
       needleCircleInner: false,
-      animationDuration: 1500,
+      animationDuration: 700,
       animationRule:"linear"
     })
     this.gauge = new RadialGauge(options).draw()

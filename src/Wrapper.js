@@ -107,7 +107,7 @@ const styles = (theme) => ({
 class Wrapper extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { open: true, sensors: {"s1":0.0, "s2": 0.0, "s3":0.0, "s4":0.0, "s5":0.0, "s6":0.0} }
+    this.state = {open: true, sensors: {"s1":0.0, "s2": 0.0, "s3":0.0, "s4":0.0, "s5":0.0, "s6":0.0} }
     this.handleDrawer = this.handleDrawer.bind(this)
   }
 
@@ -119,12 +119,12 @@ class Wrapper extends React.Component {
     const str = msg.toString();
     const data = JSON.parse( str );
     const sensors = {
-                      "s1": !data.ai1 ? 0 : data.ai1, 
-                      "s2": !data.ai2 ? 0 : data.ai2, 
-                      "s3": !data.ai3 ? 0 : data.ai3, 
-                      "s4": !data.ai4 ? 0 : data.ai4,
-                      "s5": !data.ai5 ? 0 : data.ai5,
-                      "s6": !data.ai5 ? 0 : data.ai5
+                      "s1": !data.ai1 ? 0 : Number(data.ai1), 
+                      "s2": !data.ai2 ? 0 : Number(data.ai2), 
+                      "s3": !data.ai3 ? 0 : Number(data.ai3), 
+                      "s4": !data.ai4 ? 0 : Number(data.ai4),
+                      "s5": !data.ai5 ? 0 : Number(data.ai5),
+                      "s6": !data.ai5 ? 0 : Number(data.ai5)
                     }
     this.setState({sensors: sensors});
     console.log(sensors);
@@ -132,7 +132,7 @@ class Wrapper extends React.Component {
 
   componentDidMount() {
     console.log("mount");
-    var mqtt = MQTT.connect('ws://128.199.235.99:10283') 
+    var mqtt = MQTT.connect('ws://103.129.221.149:1202') 
 
     mqtt.on('connect', function () {
       console.log("CONNEC")
